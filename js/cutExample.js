@@ -235,37 +235,7 @@ var CutExample = function(data){
         //布块
         clothRectArr = cutResult.clothRectArr.concat();
         var clothSurplusArr = new Array();
-        function surplus_1(){ //为可用布料找一块最匹配的需要布料
-            clothSurplusArr.splice(0);
-            for(var idx = 0; idx < clothRectArr.length; idx++){
-            //console.log('clothRectArr.length:' + String(clothRectArr.length))
-                var cloth = clothRectArr[idx];
-                var clothWidth = cloth.getWidth();
-                var clothHeight = cloth.getHeight();
-                var surplusValue = clothWidth + clothHeight;
-                var fidPieceIdx = -1;
-                //找到宽度和高度最接近的需求的布块
-                for(var piecesIdx = 0; piecesIdx < waitPieceArr.length; piecesIdx++){
-                    var tempSurplusWidth = clothWidth - waitPieceArr[piecesIdx].width;
-                    var tempSurplusHeight = clothHeight - waitPieceArr[piecesIdx].height;
-                    if(tempSurplusWidth >= 0 && tempSurplusHeight >= 0){
-                        var tempSurplus = tempSurplusWidth <= tempSurplusHeight ? tempSurplusWidth : tempSurplusHeight;
-                        if(tempSurplus < surplusValue){
-                            surplusValue = tempSurplus;
-                            fidPieceIdx = piecesIdx;
-                            if(surplusValue == 0){
-                                break;
-                            }
-                        }
-                    }
-                }
-                clothSurplusArr[idx] = {surplusValue:surplusValue,fidPieceIdx:fidPieceIdx};
-                if(surplusValue == 0){
-                    break;
-                }
-            }
-        }
-         function surplus_2(){ //为需要布料找一块最匹配的可用布料
+        function surplus(){ //为可用布料找一块最匹配的需要布料
             clothSurplusArr.splice(0,clothSurplusArr.length);
             for(var idx = 0; idx < clothRectArr.length; idx++){
             //console.log('clothRectArr.length:' + String(clothRectArr.length))
@@ -295,13 +265,13 @@ var CutExample = function(data){
                 }
             }
         }
+         
         function cutOnePiece(){
             var clothIdx = -1;
             clothSurplusArr.map(function (item,index){
                 if(clothIdx < 0 && item.fidPieceIdx >= 0){
                     clothIdx = index;
-                } else if(item.surplusValue < clothSurplusArr[clothIdx.surplusValue] && item.fidPieceIdx >= 0){
-                //} else if(item.surplusValue < clothSurplusArr[clothIdx].surplusValue && item.fidPieceIdx >= 0){
+                } else if(item.surplusValue < clothSurplusArr[clothIdx].surplusValue && item.fidPieceIdx >= 0){
                 
                     clothIdx = index;
                 }
@@ -372,9 +342,9 @@ var CutExample = function(data){
                 }
             return true;
         };
-        surplus_1();
+        surplus();
         while(clothRectArr.length > 0 && waitPieceArr.length > 0 && cutOnePiece()){
-            surplus_1();
+            surplus();
         }
         return {usedArea:usedArea,finishPieces:finishPieceArr,waitPieces:waitPieceArr,cutLineArr:cutLineArr};
     };
