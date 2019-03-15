@@ -1,0 +1,90 @@
+<link rel="import" href="./polymer/polymer.html">
+<polymer-element name="example-card" attributes="filename cutExample filetext">
+  <template>
+    <style>
+      #filetext{
+        font-size:14px;
+        width:150px;
+        padding:10px;
+        border:0;
+        margin:0px;
+        float:left;
+        djjd:#0fcc0f
+      }
+      #resulttext{
+        font-size:12px;
+        width:200px;
+        padding:10px;
+        border:0;
+        margin:0px;
+        float:left;
+      }
+      #canvas{
+        width:400px;
+        padding:10px;
+        border:0;
+        margin:0px;
+        float:left; 
+      }
+      #finishpiece{
+        font-size:12px;
+        width:100px;
+        padding:10px;
+        border:0;
+        margin:0px;
+        float:left;
+      }
+    </style>
+
+    <!-- CARD CONTENTS GO HERE -->
+    <div>
+      <div id="filetext"> 
+      <p>{{filename}}</p>
+      <p>使用率(使用/总）:<br/>{{cutExample.utilization}}</p>
+      <p>使用面积:{{cutExample.usedArea}}</p>
+      <p id="filetext"></p>
+      <p id="piecenumber"></p>
+      </div>
+      <div id="resulttext"> </div>
+      <div id="canvas" layout vertical>
+        <canvas id="wheelcanvas" width="400px" height="400px"></canvas>
+        <canvas id="usedcanvas" width="400px" height="400px"></canvas>
+      </div>
+      <div id="finishpiece">
+        <p>获得布片数：{{cutExample.finishPieceArr.length}}</p>
+        <p id="finishpieceList"></p>
+      </div>
+      
+    </div>  
+  </template>
+  <script>
+  Polymer({
+    domReady:function(){
+      this.$.filetext.innerHTML = this.filetext;
+      var pieceNum = 0;
+      this.cutExample.pieceArr.map(function(item){
+        pieceNum = pieceNum + item.numbre;
+      });
+      this.$.piecenumber.innerHTML = '需求布块数：' + String(pieceNum);
+      this.$.resulttext.innerHTML = this.cutExample.cutResult.join();
+      var canvas = this.$.wheelcanvas;
+      if(canvas.getContext){
+        var ctx = canvas.getContext("2d");
+	      //在给定矩形内清空一个矩形
+	      ctx.clearRect(0,0,400,400);
+        this.cutExample.drowCutResult(ctx);
+      }
+      if(this.$.usedcanvas.getContext){
+        var ctx = this.$.usedcanvas.getContext("2d");
+	      //在给定矩形内清空一个矩形
+	      ctx.clearRect(0,0,400,400);
+        this.cutExample.drowUsed(ctx);
+      }
+      this.$.finishpieceList.innerHTML = '<ol>' + this.cutExample.finishPieceArr.map(function(item){
+        return '<li>' + String(item.piece.width) + '*' + String(item.piece.height) + '</li>';
+      }).join('') + '</ol>';
+    },
+    
+  });
+  </script>
+</polymer-element>

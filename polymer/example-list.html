@@ -1,0 +1,23 @@
+<link rel="import" href="./polymer/polymer.html">
+<link rel="import" href="example-card.html">
+
+<polymer-element name="example-list" attributes="exampleArr">
+  <template>
+    <style>
+      
+    </style>
+
+<div layout vertical>  
+  <template repeat="{{example in exampleArr}}">  
+    <example-card cutExample="{{example.cutexample}}" filename="{{example.filename}}" filetext="{{example.filetext}}">  
+    </example-card>  
+  </template>  
+</div>  
+  </template>
+
+  <script>
+  Polymer({
+  });
+  </script>
+
+</polymer-element>

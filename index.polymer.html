@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>缺陷布料裁剪</title>
+
+<link rel="import" href="./polymer/polymer/polymer.html">
+<link rel="import" href="./polymer/example-list.html">
+
+<script type="text/javascript" src="js/defined.js"></script>
+<script type="text/javascript" src="js/class.js"></script>
+<script type="text/javascript" src="js/cloth.js"></script>
+<script type="text/javascript" src="js/cutExample.js"></script>
+
+
+</head>
+<body >
+    <template id="example-template">
+        <li>
+            <div>
+                <br/><br/>
+                <p>{{example.utilization}}</p>
+                <canvas id="wheelcanvas" width="500px" height="500px"></canvas>
+            </div>
+        </li>
+    </template>
+    
+    <p> 最先提供的数据格式：</p><input type="file" multiple onchange="upload(this,'old')" />
+    <p> 后来提供的数据格式：</p><input type="file" multiple onchange="upload(this,'new')" />
+    <br/><br/>
+<button onclick="run()">运行</button>
+<example-list exampleArr={{exampleArr}} ></example-list>
+    
+<script type="text/javascript">
+var inputDataArr = new Array();
+var upload = function(input,type){
+            inputDataArr.splice(0);//清空所有数据
+            var files = input.files;
+            //var files = document.getElementById("file").files;
+            // console.log(files.lenght);
+            for(var idx = 0; idx < files.length; idx++){
+                var data = new ExampleData(files[idx],type); 
+            }
+
+        };
+var exampleArr =  new Array();
+
+var run = function(){
+            this.exampleArr.splice(0);//清空所有数据
+            for(var idx = 0; idx < inputDataArr.length; idx++){
+                var data = inputDataArr[idx]; 
+                var cutExample = new CutExample(data.data);
+                cutExample.cut();
+                this.exampleArr.push({
+                    cutexample:cutExample,
+                    filename:data.filename,
+                    filetext:data.filetext.replace(new RegExp('\r\n', 'g'), '<br/>')});
+            }
+            var list = document.querySelector('example-list');
+            list.exampleArr = exampleArr;
+        };
+
+//style="background:#e62d2d;overflow-x:hidden;"
+
+</script>
+</body>
+</html>
