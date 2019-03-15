@@ -271,7 +271,7 @@ var CutExample = function(data){
             clothSurplusArr.map(function (item,index){
                 if(clothIdx < 0 && item.fidPieceIdx >= 0){
                     clothIdx = index;
-                } else if(item.surplusValue < clothSurplusArr[clothIdx].surplusValue && item.fidPieceIdx >= 0){
+                } else if(clothIdx >= 0 && item.surplusValue < clothSurplusArr[clothIdx].surplusValue && item.fidPieceIdx >= 0){
                 
                     clothIdx = index;
                 }
