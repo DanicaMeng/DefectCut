@@ -2,6 +2,11 @@
 <polymer-element name="example-card" attributes="filename cutExample filetext">
   <template>
     <style>
+      #cardborder{
+        width:100%;
+        border:2px;
+        border-color:black;
+      }
       #filetext{
         font-size:14px;
         width:150px;
@@ -38,7 +43,7 @@
 
     <!-- CARD CONTENTS GO HERE -->
     <div>
-      <div id="filetext"> 
+      <div id="cardborder"> 
       <p>{{filename}}</p>
       <p>使用率(使用/总）:<br/>{{cutExample.utilization}}</p>
       <p>使用面积:{{cutExample.usedArea}}</p>
